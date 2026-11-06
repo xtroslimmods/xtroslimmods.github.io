@@ -15,7 +15,7 @@
   - "downloads": optional number shown on the card (e.g. 12500). Leave 0 to hide.
   - "gallery": pictures in /images/gallery, each with a short caption
   - Dates are written YYYY-MM-DD.
-  All mods are client-side, closed source, and covered by the license in LICENSE.
+  All mods are client-side, closed source, and All Rights Reserved (see LICENSE).
 */
 
 const SITE = {
@@ -25,7 +25,7 @@ const SITE = {
   intro: "Lightweight client-side mods that make Minecraft feel better to play. Free for personal use: download, drop into your mods folder, and play.",
   minecraft: "1.21.11",
   loader: "Fabric",
-  licenseName: "xtroslimmods Mod License",
+  licenseName: "All Rights Reserved",
   github: "https://github.com/xtroslimmods",
   discord: "",        // paste your invite link, e.g. "https://discord.gg/abc123"
   contactEmail: "",   // optional, shown on the Help page

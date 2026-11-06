@@ -2,7 +2,7 @@
 
 Website for my client-side Fabric mods for Minecraft 1.21.11, live at **https://xtroslimmods.github.io**.
 
-The mods are closed source and for personal use only. See [LICENSE](LICENSE). Redistribution and any commercial use are not allowed.
+The mods are closed source and **All Rights Reserved** (see [LICENSE](LICENSE)). They may only be downloaded from this site for personal, non-commercial use. Redistribution, selling and modification are not allowed.
 
 ## Pages
 
