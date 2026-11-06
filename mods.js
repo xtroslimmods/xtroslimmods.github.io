@@ -12,7 +12,8 @@
   - "icon": a square .png in /images, e.g. "images/my-mod.png"
   - "download": a GitHub Release file link, or a file in /files, e.g. "files/my-mod-1.0.0.jar"
   - "tags": short categories like "Utility", "HUD", "Visual"
-  - "downloads": optional number shown on the card (e.g. 12500). Leave 0 to hide.
+  - Download counts are automatic: upload the .jar to a GitHub Release and name
+    it starting with the mod's id, e.g. "handheld-lanterns-1.2.0.jar".
   - "gallery": pictures in /images/gallery, each with a short caption
   - Dates are written YYYY-MM-DD.
   All mods are client-side, closed source, and All Rights Reserved (see LICENSE).
@@ -27,6 +28,9 @@ const SITE = {
   loader: "Fabric",
   licenseName: "All Rights Reserved",
   github: "https://github.com/xtroslimmods",
+  // Download counts come from the GitHub Releases in this repo (no tracking).
+  // Upload each .jar to a Release, and start its file name with the mod's id.
+  releasesRepo: "xtroslimmods/xtroslimmods.github.io",
   discord: "",        // paste your invite link, e.g. "https://discord.gg/abc123"
   contactEmail: "",   // optional, shown on the Help page
   footer: "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."
@@ -41,7 +45,6 @@ const MODS = [
     tags: ["Visual"],
     version: "1.2.0",
     updated: "2026-11-03",
-    downloads: 0,
     size: "184 KB",
     download: "files/handheld-lanterns-1.2.0.jar",
     requires: ["Fabric API"],
@@ -74,7 +77,6 @@ const MODS = [
     tags: ["Utility", "HUD"],
     version: "2.0.3",
     updated: "2026-10-21",
-    downloads: 0,
     size: "310 KB",
     download: "files/honest-hud-2.0.3.jar",
     requires: ["Fabric API"],
@@ -96,7 +98,6 @@ const MODS = [
     tags: ["Utility", "Inventory"],
     version: "1.0.4",
     updated: "2026-09-02",
-    downloads: 0,
     size: "56 KB",
     download: "files/shulker-peek-1.0.4.jar",
     requires: ["Fabric API"],
@@ -118,7 +119,6 @@ const MODS = [
     tags: ["Utility", "Audio"],
     version: "3.1.0",
     updated: "2026-05-17",
-    downloads: 0,
     size: "22 KB",
     download: "files/quiet-villagers-3.1.0.jar",
     requires: [],

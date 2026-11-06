@@ -125,6 +125,43 @@
     document.querySelectorAll("[data-github]").forEach((el) => { if (SITE.github) el.href = SITE.github; else el.remove(); });
   }
 
+  /* ---------- download counts ----------
+     Reads the public download_count GitHub keeps on each Release file.
+     No cookies, no analytics, nothing about visitors is recorded or sent anywhere.
+     A file counts toward a mod when its name starts with the mod's id,
+     e.g. "handheld-lanterns-1.2.0.jar" counts for "handheld-lanterns". */
+  const DL = {};          // mod id -> total downloads (filled in once loaded)
+  let dlLoaded = false;
+  async function loadDownloads() {
+    if (!SITE.releasesRepo) return false;
+    const KEY = "dl-counts-v1";
+    try {
+      const cached = JSON.parse(sessionStorage.getItem(KEY) || "null");
+      if (cached && Date.now() - cached.t < 10 * 60 * 1000) { Object.assign(DL, cached.data); return (dlLoaded = true); }
+    } catch (e) { /* storage unavailable: just fetch */ }
+    try {
+      const ids = MODS.map((m) => m.id.toLowerCase()).sort((a, b) => b.length - a.length); // longest id wins
+      const data = Object.fromEntries(MODS.map((m) => [m.id, 0]));
+      for (let page = 1; page <= 5; page++) {
+        const res = await fetch(`https://api.github.com/repos/${SITE.releasesRepo}/releases?per_page=100&page=${page}`,
+          { credentials: "omit", referrerPolicy: "no-referrer", headers: { Accept: "application/vnd.github+json" } });
+        if (!res.ok) return false;
+        const releases = await res.json();
+        releases.forEach((r) => (r.assets || []).forEach((a) => {
+          const name = a.name.toLowerCase();
+          const id = ids.find((x) => name.startsWith(x));
+          if (id) { const m = MODS.find((mm) => mm.id.toLowerCase() === id); data[m.id] += a.download_count || 0; }
+        }));
+        if (releases.length < 100) break;
+      }
+      Object.assign(DL, data);
+      try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), data })); } catch (e) {}
+      return (dlLoaded = true);
+    } catch (e) { return false; }
+  }
+  const dlCount = (m) => DL[m.id] || 0;
+  const totalDownloads = () => MODS.reduce((n, m) => n + dlCount(m), 0);
+
   /* ---------- a mod card (list style) ---------- */
   function card(m, headingTag = "h2") {
     return `
@@ -139,9 +176,9 @@
           ${tagList(m)}
         </div>
         <div class="mod-stats">
-          ${m.downloads ? `<span class="stat-line">${I.download}<b>${compact(m.downloads)}</b></span>` : `<span class="stat-line"><b>v${esc(m.version)}</b></span>`}
+          ${dlLoaded ? `<span class="stat-line" title="${dlCount(m).toLocaleString()} downloads">${I.download}<b>${compact(dlCount(m))}</b> downloads</span>` : ""}
+          <span class="stat-line"><b>v${esc(m.version)}</b></span>
           ${m.updated ? `<span class="stat-line" title="${fmtDate(m.updated)}">${I.clock}${ago(m.updated)}</span>` : ""}
-          <a class="btn btn-primary btn-sm" href="${esc(m.download)}" download>${I.download} Download</a>
         </div>
       </article>`;
   }
@@ -151,9 +188,15 @@
   /* ---------- welcome page (one screen, no scrolling) ---------- */
   function home() {
     document.title = `${SITE.name} · ${SITE.tagline}`;
-    const total = MODS.reduce((n, m) => n + (m.downloads || 0), 0);
     $("#stat-mods").textContent = MODS.length;
-    if (total) { $("#stat-dl").textContent = compact(total); } else { $("#stat-dl-wrap").remove(); }
+    const wrap = $("#stat-dl-wrap");
+    wrap.hidden = true;
+    loadDownloads().then((ok) => {
+      if (!ok) return;
+      $("#stat-dl").textContent = compact(totalDownloads());
+      wrap.title = `${totalDownloads().toLocaleString()} downloads`;
+      wrap.hidden = false;
+    });
   }
 
   /* ---------- mods page ---------- */
@@ -172,7 +215,8 @@
         draw();
       });
     }
-    if (!MODS.some((m) => m.downloads)) sort.querySelector('[value="downloads"]').remove();
+    const dlOption = sort.querySelector('[value="downloads"]');
+    dlOption.disabled = true;
 
     function draw() {
       const term = q.value.trim().toLowerCase();
@@ -180,7 +224,7 @@
         (!tag || (m.tags || []).includes(tag)) &&
         (!term || [m.name, m.summary, ...(m.tags || [])].join(" ").toLowerCase().includes(term)));
       const s = sort.value;
-      shown.sort(s === "name" ? (a, b) => a.name.localeCompare(b.name) : s === "downloads" ? (a, b) => (b.downloads || 0) - (a.downloads || 0) : byUpdated);
+      shown.sort(s === "name" ? (a, b) => a.name.localeCompare(b.name) : s === "downloads" ? (a, b) => dlCount(b) - dlCount(a) : byUpdated);
       list.innerHTML = shown.map((m) => card(m)).join("");
       count.textContent = `${shown.length} mod${shown.length === 1 ? "" : "s"}`;
       empty.hidden = shown.length > 0;
@@ -193,6 +237,7 @@
       draw(); q.focus();
     });
     draw();
+    loadDownloads().then((ok) => { if (ok) { dlOption.disabled = false; draw(); } });
   }
 
   /* ---------- single mod page ---------- */
@@ -241,7 +286,7 @@
           <div class="head-actions">
             <a class="btn btn-primary btn-lg" href="${esc(m.download)}" download>${I.download} Download ${esc(m.version)}</a>
             <div class="head-stats">
-              ${m.downloads ? `<span>${I.download}${compact(m.downloads)}</span>` : ""}
+              <span id="mod-dl" hidden>${I.download}<b></b></span>
               ${m.size ? `<span>${I.cube}${esc(m.size)}</span>` : ""}
               ${m.updated ? `<span title="${fmtDate(m.updated)}">${I.clock}${ago(m.updated)}</span>` : ""}
             </div>
@@ -313,6 +358,15 @@
         <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
         <button class="lb-btn lb-next" id="lb-next" aria-label="Next screenshot">${I.chevronR}</button>
       </div>`;
+
+    /* live download count for this mod */
+    loadDownloads().then((ok) => {
+      if (!ok) return;
+      const el = $("#mod-dl");
+      el.querySelector("b").textContent = `${compact(dlCount(m))} downloads`;
+      el.title = `${dlCount(m).toLocaleString()} downloads`;
+      el.hidden = false;
+    });
 
     /* tabs (also linkable: mod.html?id=x#gallery) */
     const tabs = [...document.querySelectorAll('[role="tab"]')];
