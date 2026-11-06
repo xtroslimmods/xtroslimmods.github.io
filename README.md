@@ -1,6 +1,8 @@
 # xtroslimmods
 
-Website for my Fabric mods for Minecraft 1.21.11, live at **https://xtroslimmods.github.io**.
+Website for my client-side Fabric mods for Minecraft 1.21.11, live at **https://xtroslimmods.github.io**.
+
+The mods are closed source and for personal use only. See [LICENSE](LICENSE). Redistribution and any commercial use are not allowed.
 
 ## Pages
 
@@ -10,7 +12,7 @@ Website for my Fabric mods for Minecraft 1.21.11, live at **https://xtroslimmods
 | Mods | `mods.html` | List of every mod, with search, sort and category filters |
 | Each mod | `mod.html?id=…` | Built automatically: description, gallery, changelog, compatibility |
 | Help | `help.html` | Install guide, FAQ, bug reports, contact |
-| Terms & conduct | `terms.html` | Usage terms and community rules |
+| Terms & conduct | `terms.html` | License summary, terms of use and community rules |
 
 ## Adding or editing mods
 
@@ -36,4 +38,4 @@ The Help and Terms pages are plain HTML: open `help.html` or `terms.html` and ed
 
 ## After a big update
 
-Browsers save copies of `style.css`, `app.js` and `mods.js`. If visitors might still see an old version, bump the `?v=2` at the end of those links in every `.html` file (to `?v=3` and so on).
+Browsers save copies of `style.css`, `app.js` and `mods.js`. If visitors might still see an old version, bump the `?v=3` at the end of those links in every `.html` file (to `?v=4` and so on).

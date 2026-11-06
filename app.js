@@ -58,7 +58,7 @@
     : `<span class="initials" aria-hidden="true">${esc(initials(m.name))}</span>`}</div>`;
 
   const tagList = (m) => `<ul class="tags">
-      ${m.side ? `<li class="tag">${sideIcon(m.side)}${esc(sideLabel(m.side))}</li>` : ""}
+      <li class="tag">${I.monitor}Client-side</li>
       ${(m.tags || []).map((t) => `<li class="tag">${I.tag}${esc(t)}</li>`).join("")}
       <li class="tag tag-loader">${I.fabric}${esc(SITE.loader)}</li>
     </ul>`;
@@ -103,6 +103,7 @@
             <li><a href="mods.html">Mods</a></li>
             <li><a href="help.html">Help</a></li>
             <li><a href="terms.html">Terms & conduct</a></li>
+            <li><a href="terms.html#license">License</a></li>
           </ul>
         </div>
         <div>
@@ -110,8 +111,6 @@
           <ul>
             <li><a href="${esc(discordUrl)}">Discord</a></li>
             ${SITE.github ? `<li><a href="${esc(SITE.github)}" rel="noopener">GitHub</a></li>` : ""}
-            ${SITE.modrinth ? `<li><a href="${esc(SITE.modrinth)}" rel="noopener">Modrinth</a></li>` : ""}
-            ${SITE.curseforge ? `<li><a href="${esc(SITE.curseforge)}" rel="noopener">CurseForge</a></li>` : ""}
           </ul>
         </div>
       </div>
@@ -218,8 +217,8 @@
     const log = m.changelog || [];
     const desc = Array.isArray(m.description) ? m.description : [m.description].filter(Boolean);
     const links = [
-      [I.code, "Source code", m.source], [I.bug, "Report a bug", m.issues],
-      [I.link, "Modrinth", m.modrinth], [I.link, "CurseForge", m.curseforge],
+      [I.bug, "Report a bug", "help.html#bugs"],
+      [I.link, "License & terms", "terms.html#license"],
       [I.discord, "Discord", SITE.discord]
     ].filter(([, , u]) => u);
 
@@ -287,7 +286,7 @@
                 <dl class="facts">
                   <div><dt>Minecraft</dt><dd>${esc(SITE.minecraft)}</dd></div>
                   <div><dt>Loader</dt><dd>${esc(SITE.loader)}</dd></div>
-                  ${m.side ? `<div><dt>Environment</dt><dd>${esc(sideLabel(m.side))}</dd></div>` : ""}
+                  <div><dt>Environment</dt><dd>Client-side</dd></div>
                   <div><dt>Requires</dt><dd>${esc((m.requires || []).join(", ") || "Nothing else")}</dd></div>
                 </dl>
               </div>
@@ -296,7 +295,8 @@
                 <dl class="facts">
                   <div><dt>Version</dt><dd>${esc(m.version)}</dd></div>
                   ${m.size ? `<div><dt>File size</dt><dd>${esc(m.size)}</dd></div>` : ""}
-                  ${m.license ? `<div><dt>License</dt><dd>${esc(m.license)}</dd></div>` : ""}
+                  <div><dt>License</dt><dd><a href="terms.html#license">${esc(SITE.licenseName)}</a></dd></div>
+                  <div><dt>Source</dt><dd>Closed source</dd></div>
                   ${m.updated ? `<div><dt>Updated</dt><dd>${fmtDate(m.updated)}</dd></div>` : ""}
                   ${log.length ? `<div><dt>Published</dt><dd>${fmtDate(log[log.length - 1].date)}</dd></div>` : ""}
                 </dl>

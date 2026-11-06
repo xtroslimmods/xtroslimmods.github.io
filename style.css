@@ -357,6 +357,8 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.15; }
 .facts div { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; font-size: .925rem; }
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; font-weight: 600; text-align: right; }
+.facts dd a { color: var(--purple-2); text-decoration: none; }
+.facts dd a:hover { text-decoration: underline; }
 .link-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .25rem; }
 .link-list a { display: flex; align-items: center; gap: .6rem; padding: .45rem .5rem; margin: 0 -.5rem; border-radius: 8px; text-decoration: none; color: var(--text-2); font-size: .935rem; }
 .link-list a:hover { background: rgba(255,255,255,.05); color: var(--text); }
