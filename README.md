@@ -33,3 +33,7 @@ Everything about your mods lives in **`mods.js`**. Edit it right on GitHub (open
 ## Changing site text
 
 The Help and Terms pages are plain HTML: open `help.html` or `terms.html` and edit the text between the tags. The logo is `images/logo.png`.
+
+## After a big update
+
+Browsers save copies of `style.css`, `app.js` and `mods.js`. If visitors might still see an old version, bump the `?v=2` at the end of those links in every `.html` file (to `?v=3` and so on).
