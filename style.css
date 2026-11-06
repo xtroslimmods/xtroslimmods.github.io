@@ -671,3 +671,6 @@ h1, h2, h3 { font-weight: 700; }
 .doc .updated { font-family: var(--pixel); color: var(--gold); }
 .toc a:hover { border-left-color: var(--gold); }
 .footer-grid h4 { font-family: var(--pixel); font-weight: 600; font-size: 1rem; }
+
+/* anything marked hidden stays hidden */
+[hidden] { display: none !important; }

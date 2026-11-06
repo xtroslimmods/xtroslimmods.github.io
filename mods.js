@@ -38,6 +38,34 @@ const SITE = {
 
 const MODS = [
   {
+    id: "ez-presets",
+    name: "EZ Presets",
+    icon: "images/ez-presets.png",
+    summary: "Save your inventory layout as a preset and put everything back in place with one click.",
+    tags: ["Inventory", "Utility"],
+    version: "1.0.0",
+    updated: "2026-11-06",
+    size: "95 KB",
+    download: "files/ez-presets-1.0.0.jar",
+    requires: ["Fabric API"],
+    description: [
+      "Stop rearranging your inventory after every death or restock. EZ Presets lets you save the layout you like and snap everything back into place with a single click.",
+      "A presets panel sits right next to your inventory with a live preview of each layout, so you always know what you're loading. Everything is client-side, so it works on any server."
+    ],
+    features: [
+      "Save as many inventory layouts as you want",
+      "One click puts every item back where it belongs",
+      "Presets panel next to your inventory with a live preview",
+      "Sort button",
+      "Share codes to swap layouts with friends",
+      "Hotkeys and optional hotbar refill"
+    ],
+    gallery: [],
+    changelog: [
+      { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
+    ]
+  },
+  {
     id: "knight-pvp",
     name: "Knight PvP",
     icon: "images/knight-pvp.png",
