@@ -1,54 +1,35 @@
-# My Minecraft mods site
+# xtroslimmods
 
-A simple dark-themed site for sharing all your Minecraft mods, hosted free on GitHub Pages. No build tools and nothing to install.
+Website for my Fabric mods for Minecraft 1.21.11, live at **https://xtroslimmods.github.io**.
 
-## Put it online (about 5 minutes)
+## Pages
 
-1. Sign in at github.com and click **New repository**.
-   - Name it `your-username.github.io` if you want the site at `https://your-username.github.io`.
-   - Or give it any name, like `mods`, and the site will be at `https://your-username.github.io/mods`.
-   - Make it **Public**, then click **Create repository**.
-2. On the new repo page, click **uploading an existing file**. Drag in **everything inside this folder** (the files and the `images` and `files` folders), not the folder itself. Click **Commit changes**.
-3. Go to **Settings → Pages**. Under **Build and deployment**, set Source to **Deploy from a branch**, Branch to **main** and folder to **/ (root)**, then click **Save**.
-4. Wait a minute or two and refresh. The link to your live site shows at the top of the Pages settings.
+| Page | File | What it is |
+|---|---|---|
+| Home | `index.html` | One-screen welcome page |
+| Mods | `mods.html` | List of every mod, with search, sort and category filters |
+| Each mod | `mod.html?id=…` | Built automatically: description, gallery, changelog, compatibility |
+| Help | `help.html` | Install guide, FAQ, bug reports, contact |
+| Terms & conduct | `terms.html` | Usage terms and community rules |
 
-## Make it yours
+## Adding or editing mods
 
-Everything you'll want to change is in **`mods.js`**. You can edit it right on GitHub: open the file, click the pencil icon, make your changes, and click **Commit changes**. The site updates within a minute or two.
+Everything about your mods lives in **`mods.js`**. Edit it right on GitHub (open the file → pencil icon → **Commit changes**); the site updates in a minute or two.
 
-- `SITE` holds your name, the big headline (`tagline`), the intro line and your links (Modrinth, CurseForge, GitHub, Discord, Ko-fi). Leave a link as `""` to hide it.
-- `minecraft` and `loader` in `SITE` are set to `1.21.11` and `Fabric`. They show on every mod, so when you update to a new Minecraft version you only change them once.
-- `MODS` is your list of mods. There's no limit. Delete the four example mods and add your own: copy a whole `{ ... },` block, paste it after the others, and change the values.
-- **Every mod gets its own page automatically** at `mod.html?id=` plus the mod's `id`. Clicking a mod on the home page opens it.
-
-## Hosting the mod files
-
-You have two options for where the download button points.
-
-**GitHub Releases (recommended for anything over a few MB).** In your repo, click **Releases → Create a new release**, attach your mod file, and publish. Right-click the file on the release page, copy its link, and paste it as `download` in `mods.js`. Releases also show download counts.
-
-**The `files` folder (fine for small files).** Upload the file into `files/`, then set `download` to `"files/your-mod-1.0.0.jar"`. GitHub won't take single files over 100 MB this way.
-
-## Adding icons and screenshots
-
-Each mod has its own icon. Upload your icon into the `images` folder (the same square `icon.png` you put in your mod's jar works great, and pixel art stays sharp), then set:
-
-    icon: "images/my-mod-icon.png",
-
-The example mods use pixel-art icons in `images/` that you can delete. If a mod has no icon (`icon: ""`), its initials are shown instead.
-
-Add screenshots like this:
-
-    screenshots: ["images/my-mod-1.png", "images/my-mod-2.png"],
+- **Discord link:** paste your invite into `discord:` in `SITE`. Until then, the Discord buttons go to the Help page's contact section.
+- **New mod:** copy a whole `{ ... },` block in `MODS`, paste it after the others, change the values. It gets its own page automatically.
+- **Icon:** upload a square PNG to `images/` and set `icon: "images/my-mod.png"`.
+- **Gallery:** upload screenshots to `images/gallery/` and list them:
+  `gallery: [{ src: "images/gallery/my-mod-1.png", caption: "What this shows" }]`
+- **Download file:** upload the `.jar` to a GitHub Release (best) or the `files/` folder, and put its link in `download:`.
+- **Downloads count:** optional. Set `downloads: 12500` to show it on the card.
 
 ## Updating a mod
 
-1. Upload the new file (to a new Release or the `files` folder).
+1. Upload the new `.jar`.
 2. In `mods.js`, change `version`, `updated`, `size` and `download`.
-3. Add a new entry to the **top** of that mod's `changelog`.
+3. Add the new version to the **top** of that mod's `changelog`.
 
-The newest-updated mod always shows first on the home page.
+## Changing site text
 
-## Checking it on your computer
-
-Double-click `index.html` to open it in your browser. It works without any setup.
+The Help and Terms pages are plain HTML: open `help.html` or `terms.html` and edit the text between the tags. The logo is `images/logo.png`.

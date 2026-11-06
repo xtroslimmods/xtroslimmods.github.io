@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Mods</title>
+  <meta name="description" content="All Fabric mods by xtroslimmods for Minecraft 1.21.11.">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="mods">
+  <div class="bg" aria-hidden="true"></div>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main" class="wrap">
+    <div class="page-head">
+      <h1>Mods</h1>
+      <p>Everything I've made for Fabric <span data-site="minecraft"></span>. Click a mod to see screenshots, the changelog and what it needs.</p>
+    </div>
+
+    <div class="toolbar">
+      <label class="search">
+        <span class="visually-hidden">Search mods</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search mods" autocomplete="off">
+      </label>
+      <label>
+        <span class="visually-hidden">Sort by</span>
+        <select id="sort" class="select">
+          <option value="updated">Recently updated</option>
+          <option value="downloads">Most downloaded</option>
+          <option value="name">Name (A–Z)</option>
+        </select>
+      </label>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+
+    <p class="result-count" id="result-count" aria-live="polite"></p>
+    <div class="mod-list" id="mod-list"></div>
+    <p class="empty" id="empty" hidden>No mods match your search. <button type="button" class="text-btn" id="clear">Show all mods</button></p>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="mods.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

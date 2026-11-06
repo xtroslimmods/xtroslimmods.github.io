@@ -1,166 +1,372 @@
+/* Builds the menu, footer, mod cards, mod pages and gallery from mods.js.
+   You shouldn't need to edit this file. */
 (function () {
   "use strict";
 
-  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c]));
-
+  /* ---------- helpers ---------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const toDate = (iso) => new Date(iso + "T12:00:00");
   const fmtDate = (iso) => {
     if (!iso) return "";
-    const d = new Date(iso + "T12:00:00");
-    return isNaN(d) ? esc(iso) : d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    const d = toDate(iso);
+    return isNaN(d) ? esc(iso) : d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  };
+  const ago = (iso) => {
+    const d = toDate(iso); if (isNaN(d)) return "";
+    const days = Math.round((Date.now() - d) / 864e5);
+    if (days <= 0) return "today";
+    if (days === 1) return "yesterday";
+    if (days < 30) return `${days} days ago`;
+    const months = Math.round(days / 30.4);
+    if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
+    const years = Math.round(days / 365);
+    return `${years} year${years === 1 ? "" : "s"} ago`;
+  };
+  const compact = (n) => n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, "") + "M"
+    : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, "") + "K" : String(n);
+  const initials = (name) => name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  const modUrl = (m) => `mod.html?id=${encodeURIComponent(m.id)}`;
+
+  const I = {
+    download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
+    monitor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+    server: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg>',
+    tag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9-9-9z"/><circle cx="8" cy="8" r="1.5"/></svg>',
+    fabric: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 15 4l5 5L9 20H4z"/><path d="M12 7l5 5"/></svg>',
+    cube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>',
+    chevronR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',
+    chevronL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>',
+    bug: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="7" y="7" width="10" height="13" rx="5"/><path d="M12 11v9M4 12h3M17 12h3M5 6l3 2M19 6l-3 2M5 19l2.5-2M19 19l-2.5-2"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',
+    github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>',
+    discord: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.3A16.6 16.6 0 0 0 15.5 4l-.5 1a15.3 15.3 0 0 0-6 0l-.5-1a16.6 16.6 0 0 0-4.1 1.3C1.8 9.2 1.1 13 1.4 16.7a16.7 16.7 0 0 0 5.1 2.6l1.1-1.8a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11.4 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.8a16.6 16.6 0 0 0 5.1-2.6c.4-4.3-.7-8-2.9-11.4zM8.5 14.4c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>'
   };
 
-  const initials = (name) =>
-    name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  const discordUrl = SITE.discord || "help.html#contact";
+  const sideIcon = (side = "") => /server/i.test(side) && !/client/i.test(side) ? I.server : /client/i.test(side) && !/server/i.test(side) ? I.monitor : I.globe;
+  const sideLabel = (side = "") => /client/i.test(side) && /server/i.test(side) ? "Client or server" : side;
 
-  const icon = (m) => `<div class="icon">${m.icon
-    ? `<img src="${esc(m.icon)}" alt="">`
+  const icon = (m) => `<div class="mod-icon">${m.icon
+    ? `<img src="${esc(m.icon)}" alt="" loading="lazy">`
     : `<span class="initials" aria-hidden="true">${esc(initials(m.name))}</span>`}</div>`;
 
-  const ICONS = {
-    download: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5m0 0L4.5 7M8 10.5 11.5 7M2.5 13.5h11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    back: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-  };
+  const tagList = (m) => `<ul class="tags">
+      ${m.side ? `<li class="tag">${sideIcon(m.side)}${esc(sideLabel(m.side))}</li>` : ""}
+      ${(m.tags || []).map((t) => `<li class="tag">${I.tag}${esc(t)}</li>`).join("")}
+      <li class="tag tag-loader">${I.fabric}${esc(SITE.loader)}</li>
+    </ul>`;
 
-  const platform = `${SITE.loader || "Fabric"} ${SITE.minecraft || ""}`.trim();
-  const sorted = [...MODS].sort((a, b) => String(b.updated).localeCompare(String(a.updated)));
+  /* ---------- header & footer (shared on every page) ---------- */
+  function layout() {
+    const page = document.body.dataset.page;
+    const tabs = [["home", "Home", "./"], ["mods", "Mods", "mods.html"], ["help", "Help", "help.html"], ["terms", "Terms & conduct", "terms.html"]];
+    const current = page === "mod" ? "mods" : page;
 
-  /* ---------- shared header + footer ---------- */
-  document.getElementById("brand").textContent = SITE.name;
-  const links = [
-    ["Modrinth", SITE.modrinth], ["CurseForge", SITE.curseforge],
-    ["GitHub", SITE.github], ["Discord", SITE.discord], ["Ko-fi", SITE.kofi]
-  ].filter(([, url]) => url);
-  document.getElementById("site-links").innerHTML =
-    links.map(([label, url]) => `<a href="${esc(url)}" rel="me noopener">${label}</a>`).join("");
-  document.getElementById("footer").innerHTML =
-    `<p>&copy; ${new Date().getFullYear()} ${esc(SITE.name)}. ${esc(SITE.footer || "")}</p>`;
+    $("#site-header").innerHTML = `
+      <a class="skip" href="#main">Skip to content</a>
+      <div class="wrap nav">
+        <a href="./" class="brand"><img src="${esc(SITE.logo)}" alt="">${esc(SITE.name)}</a>
+        <ul class="nav-tabs" id="nav-tabs">
+          ${tabs.map(([key, label, href]) => `<li><a href="${href}"${key === current ? ' aria-current="page"' : ""}>${label}</a></li>`).join("")}
+          <li class="show-sm"><a href="${esc(discordUrl)}">Discord</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-discord btn-sm hide-sm" href="${esc(discordUrl)}"${SITE.discord ? ' rel="noopener"' : ""}>${I.discord} Discord</a>
+          ${SITE.github ? `<a class="icon-btn" href="${esc(SITE.github)}" rel="noopener" aria-label="GitHub" title="GitHub">${I.github}</a>` : ""}
+          <button class="icon-btn menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-tabs">${I.menu}</button>
+        </div>
+      </div>`;
 
-  /* ---------- home ---------- */
+    const menuBtn = $("#menu-btn"), navTabs = $("#nav-tabs");
+    menuBtn.addEventListener("click", () => {
+      const open = navTabs.classList.toggle("open");
+      menuBtn.setAttribute("aria-expanded", String(open));
+    });
+
+    if ($("#site-footer")) $("#site-footer").innerHTML = `
+      <div class="wrap footer-grid">
+        <div>
+          <a href="./" class="brand"><img src="${esc(SITE.logo)}" alt="">${esc(SITE.name)}</a>
+          <p>${esc(SITE.intro)}</p>
+        </div>
+        <div>
+          <h4>Site</h4>
+          <ul>
+            <li><a href="./">Home</a></li>
+            <li><a href="mods.html">Mods</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="terms.html">Terms & conduct</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <ul>
+            <li><a href="${esc(discordUrl)}">Discord</a></li>
+            ${SITE.github ? `<li><a href="${esc(SITE.github)}" rel="noopener">GitHub</a></li>` : ""}
+            ${SITE.modrinth ? `<li><a href="${esc(SITE.modrinth)}" rel="noopener">Modrinth</a></li>` : ""}
+            ${SITE.curseforge ? `<li><a href="${esc(SITE.curseforge)}" rel="noopener">CurseForge</a></li>` : ""}
+          </ul>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>&copy; ${new Date().getFullYear()} ${esc(SITE.name)}</span>
+        <span>${esc(SITE.footer)}</span>
+      </div>`;
+
+    // fill any [data-site] placeholders in page text
+    document.querySelectorAll("[data-site]").forEach((el) => { el.textContent = SITE[el.dataset.site] ?? ""; });
+    document.querySelectorAll("[data-discord]").forEach((el) => { el.href = discordUrl; });
+    document.querySelectorAll("[data-github]").forEach((el) => { if (SITE.github) el.href = SITE.github; else el.remove(); });
+  }
+
+  /* ---------- a mod card (list style) ---------- */
+  function card(m, headingTag = "h2") {
+    return `
+      <article class="mod-card">
+        ${icon(m)}
+        <div>
+          <div class="mod-title">
+            <${headingTag}><a class="mod-link" href="${modUrl(m)}">${esc(m.name)}</a></${headingTag}>
+            <span class="by">by <b>${esc(SITE.name)}</b></span>
+          </div>
+          <p class="summary">${esc(m.summary)}</p>
+          ${tagList(m)}
+        </div>
+        <div class="mod-stats">
+          ${m.downloads ? `<span class="stat-line">${I.download}<b>${compact(m.downloads)}</b></span>` : `<span class="stat-line"><b>v${esc(m.version)}</b></span>`}
+          ${m.updated ? `<span class="stat-line" title="${fmtDate(m.updated)}">${I.clock}${ago(m.updated)}</span>` : ""}
+          <a class="btn btn-primary btn-sm" href="${esc(m.download)}" download>${I.download} Download</a>
+        </div>
+      </article>`;
+  }
+
+  const byUpdated = (a, b) => String(b.updated).localeCompare(String(a.updated));
+
+  /* ---------- welcome page (one screen, no scrolling) ---------- */
   function home() {
-    document.title = `${SITE.name} — ${SITE.tagline || "Minecraft mods"}`;
-    document.getElementById("pill-text").textContent = `All mods for ${platform}`;
-    document.getElementById("tagline").textContent = SITE.tagline || "Minecraft mods";
-    document.getElementById("intro").textContent = SITE.intro || "";
-    if (SITE.github) {
-      const gh = document.getElementById("hero-github");
-      gh.href = SITE.github; gh.hidden = false;
-    }
+    document.title = `${SITE.name} · ${SITE.tagline}`;
+    const total = MODS.reduce((n, m) => n + (m.downloads || 0), 0);
+    $("#stat-mods").textContent = MODS.length;
+    if (total) { $("#stat-dl").textContent = compact(total); } else { $("#stat-dl-wrap").remove(); }
+  }
 
-    const grid = document.getElementById("grid");
-    const q = document.getElementById("q");
-    const empty = document.getElementById("empty");
-    document.getElementById("count").textContent = MODS.length;
+  /* ---------- mods page ---------- */
+  function modsPage() {
+    document.title = `Mods · ${SITE.name}`;
+    const list = $("#mod-list"), q = $("#q"), sort = $("#sort"), chips = $("#chips"), count = $("#result-count"), empty = $("#empty");
+    const allTags = [...new Set(MODS.flatMap((m) => m.tags || []))].sort();
+    let tag = "";
+
+    if (allTags.length) {
+      chips.innerHTML = ["", ...allTags].map((t) => `<button type="button" class="chip" data-tag="${esc(t)}" aria-pressed="${t === ""}">${t ? esc(t) : "All"}</button>`).join("");
+      chips.addEventListener("click", (e) => {
+        const b = e.target.closest(".chip"); if (!b) return;
+        tag = b.dataset.tag;
+        chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
+        draw();
+      });
+    }
+    if (!MODS.some((m) => m.downloads)) sort.querySelector('[value="downloads"]').remove();
 
     function draw() {
       const term = q.value.trim().toLowerCase();
-      const shown = sorted.filter((m) => !term || `${m.name} ${m.summary}`.toLowerCase().includes(term));
-
-      grid.innerHTML = shown.map((m) => `
-        <article class="card">
-          <div class="card-top">
-            ${icon(m)}
-            <div>
-              <h3><a class="card-link" href="mod.html?id=${encodeURIComponent(m.id)}">${esc(m.name)}</a></h3>
-              <div class="version">v${esc(m.version)} · ${esc(platform)}</div>
-            </div>
-          </div>
-          <p class="summary">${esc(m.summary)}</p>
-          <div class="card-foot">
-            <span class="updated">Updated ${fmtDate(m.updated)}</span>
-            <a class="btn btn-primary btn-sm" href="${esc(m.download)}" download>${ICONS.download} Download</a>
-          </div>
-        </article>`).join("");
-
-      empty.hidden = shown.length !== 0;
-      document.getElementById("empty-term").textContent = q.value.trim();
+      let shown = MODS.filter((m) =>
+        (!tag || (m.tags || []).includes(tag)) &&
+        (!term || [m.name, m.summary, ...(m.tags || [])].join(" ").toLowerCase().includes(term)));
+      const s = sort.value;
+      shown.sort(s === "name" ? (a, b) => a.name.localeCompare(b.name) : s === "downloads" ? (a, b) => (b.downloads || 0) - (a.downloads || 0) : byUpdated);
+      list.innerHTML = shown.map((m) => card(m)).join("");
+      count.textContent = `${shown.length} mod${shown.length === 1 ? "" : "s"}`;
+      empty.hidden = shown.length > 0;
     }
-
     q.addEventListener("input", draw);
-    document.getElementById("clear").addEventListener("click", () => { q.value = ""; draw(); q.focus(); });
+    sort.addEventListener("change", draw);
+    $("#clear").addEventListener("click", () => {
+      q.value = ""; tag = "";
+      chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.tag === "")));
+      draw(); q.focus();
+    });
     draw();
   }
 
-  /* ---------- mod page ---------- */
+  /* ---------- single mod page ---------- */
   function modPage() {
     const id = new URLSearchParams(location.search).get("id");
     const m = MODS.find((x) => x.id === id);
-    const root = document.getElementById("mod");
-    const back = `<a href="./" class="back">${ICONS.back} All mods</a>`;
+    const root = $("#main");
 
     if (!m) {
-      document.title = `Mod not found — ${SITE.name}`;
-      root.innerHTML = `${back}<div class="not-found"><h1>Mod not found</h1>
-        <p>There's no mod with the ID “${esc(id || "")}”.</p>
-        <a href="./" class="btn btn-glass" style="margin-top:1rem">See all mods</a></div>`;
+      document.title = `Mod not found · ${SITE.name}`;
+      root.innerHTML = `<div class="narrow" style="text-align:center;padding:6rem 0">
+        <h1 style="font-size:2.2rem;margin:0 0 .6rem">Mod not found</h1>
+        <p style="color:var(--muted)">There's no mod with the ID “${esc(id || "")}”. It may have been renamed.</p>
+        <a class="btn btn-primary" href="mods.html" style="margin-top:1rem">See all mods</a></div>`;
       return;
     }
 
-    document.title = `${m.name} — ${SITE.name}`;
-    document.querySelector('meta[name="description"]').content = m.summary;
+    document.title = `${m.name} · ${SITE.name}`;
+    $('meta[name="description"]').content = m.summary;
 
-    const facts = [
-      ["Version", m.version],
-      ["Minecraft", SITE.minecraft],
-      ["Loader", SITE.loader],
-      ["Runs on", m.side],
-      ["Requires", (m.requires || []).join(", ") || "Nothing else"],
-      ["File size", m.size],
-      ["Updated", m.updated ? fmtDate(m.updated) : ""]
-    ].filter(([, v]) => v);
-
-    const desc = Array.isArray(m.description) ? m.description : [m.description].filter(Boolean);
-    const shots = m.screenshots || [];
+    const gallery = m.gallery || [];
     const log = m.changelog || [];
-    const extra = [["Modrinth", m.modrinth], ["CurseForge", m.curseforge], ["Source code", m.source]].filter(([, u]) => u);
+    const desc = Array.isArray(m.description) ? m.description : [m.description].filter(Boolean);
+    const links = [
+      [I.code, "Source code", m.source], [I.bug, "Report a bug", m.issues],
+      [I.link, "Modrinth", m.modrinth], [I.link, "CurseForge", m.curseforge],
+      [I.discord, "Discord", SITE.discord]
+    ].filter(([, , u]) => u);
+
+    const shot = (g, i) => `<figure class="shot" role="button" tabindex="0" data-index="${i}" aria-label="View ${esc(g.caption || "screenshot " + (i + 1))}">
+        <img src="${esc(g.src)}" alt="${esc(g.caption || "")}" loading="lazy">
+        ${g.caption ? `<figcaption>${esc(g.caption)}</figcaption>` : ""}
+      </figure>`;
 
     root.innerHTML = `
-      ${back}
-      <section class="mod-hero">
-        ${icon(m)}
-        <div>
-          <h1 class="gradient-text">${esc(m.name)}</h1>
-          <p class="summary">${esc(m.summary)}</p>
-          <div class="tags">
-            <span class="tag tag-green">${esc(platform)}</span>
-            ${m.side ? `<span class="tag">${esc(m.side)}</span>` : ""}
-            <span class="tag">v${esc(m.version)}</span>
-          </div>
-          <div class="actions">
-            <a class="btn btn-primary" href="${esc(m.download)}" download>${ICONS.download} Download v${esc(m.version)}${m.size ? ` <span class="size">· ${esc(m.size)}</span>` : ""}</a>
-            ${extra.map(([label, url]) => `<a class="btn btn-glass" href="${esc(url)}" rel="noopener">${label}</a>`).join("")}
-          </div>
-        </div>
-      </section>
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="mods.html">Mods</a>${I.chevronR}<span aria-current="page">${esc(m.name)}</span></nav>
 
-      <div class="mod-layout">
-        <div>
-          ${desc.length ? `<section class="panel prose"><h2>About</h2>${desc.map((p) => `<p>${esc(p)}</p>`).join("")}</section>` : ""}
-          ${shots.length ? `<section class="panel"><h2>Screenshots</h2><div class="shots">${shots.map((s) => {
-              const src = typeof s === "string" ? s : s.src;
-              const alt = typeof s === "string" ? "" : (s.alt || "");
-              return `<a href="${esc(src)}"><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"></a>`;
-            }).join("")}</div></section>` : ""}
-          ${log.length ? `<section class="panel"><h2>Changelog</h2><ol class="changelog">${log.map((c, i) => `
-              <li class="${i === 0 ? "latest" : ""}">
-                <div class="row">
-                  <span class="v">${esc(c.version)}</span>
-                  ${i === 0 ? '<span class="latest-tag">Latest</span>' : ""}
-                  ${c.date ? `<time datetime="${esc(c.date)}">${fmtDate(c.date)}</time>` : ""}
-                </div>
-                <ul>${(c.notes || []).map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
-              </li>`).join("")}</ol></section>` : ""}
+        <header class="mod-header">
+          ${icon(m)}
+          <div>
+            <h1>${esc(m.name)}</h1>
+            <p class="summary">${esc(m.summary)}</p>
+            ${tagList(m)}
+          </div>
+          <div class="head-actions">
+            <a class="btn btn-primary btn-lg" href="${esc(m.download)}" download>${I.download} Download ${esc(m.version)}</a>
+            <div class="head-stats">
+              ${m.downloads ? `<span>${I.download}${compact(m.downloads)}</span>` : ""}
+              ${m.size ? `<span>${I.cube}${esc(m.size)}</span>` : ""}
+              ${m.updated ? `<span title="${fmtDate(m.updated)}">${I.clock}${ago(m.updated)}</span>` : ""}
+            </div>
+          </div>
+        </header>
+
+        <div class="tabbar" role="tablist" aria-label="${esc(m.name)}">
+          <button role="tab" id="tab-description" aria-controls="panel-description" aria-selected="true">Description</button>
+          <button role="tab" id="tab-gallery" aria-controls="panel-gallery" aria-selected="false">Gallery <span class="count">${gallery.length}</span></button>
+          <button role="tab" id="tab-changelog" aria-controls="panel-changelog" aria-selected="false">Changelog <span class="count">${log.length}</span></button>
         </div>
-        <aside class="panel sticky">
-          <h2>Details</h2>
-          <dl class="facts">
-            ${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}
-          </dl>
-        </aside>
+
+        <div class="mod-layout">
+          <div>
+            <section class="panel prose" role="tabpanel" id="panel-description" aria-labelledby="tab-description">
+              <h2>About ${esc(m.name)}</h2>
+              ${desc.map((p) => `<p>${esc(p)}</p>`).join("")}
+              ${(m.features || []).length ? `<ul class="checklist">${m.features.map((f) => `<li>${I.check}${esc(f)}</li>`).join("")}</ul>` : ""}
+              ${gallery.length ? `<div class="gallery-preview">${gallery.slice(0, 3).map(shot).join("")}</div>` : ""}
+            </section>
+
+            <section class="panel" role="tabpanel" id="panel-gallery" aria-labelledby="tab-gallery" hidden>
+              <h2>Gallery</h2>
+              ${gallery.length ? `<div class="gallery">${gallery.map(shot).join("")}</div>`
+                : `<p class="empty">No screenshots yet.</p>`}
+            </section>
+
+            <section class="panel" role="tabpanel" id="panel-changelog" aria-labelledby="tab-changelog" hidden>
+              <h2>Changelog</h2>
+              ${log.length ? `<ol class="changelog">${log.map((c, i) => `
+                <li class="${i === 0 ? "latest" : ""}">
+                  <div class="row"><span class="v">${esc(c.version)}</span>${i === 0 ? '<span class="latest-tag">Latest</span>' : ""}${c.date ? `<time datetime="${esc(c.date)}">${fmtDate(c.date)}</time>` : ""}</div>
+                  <ul>${(c.notes || []).map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
+                </li>`).join("")}</ol>` : `<p class="empty">No changes listed yet.</p>`}
+            </section>
+          </div>
+
+          <aside class="side">
+            <div class="panel">
+              <div class="side-group">
+                <h3>Compatibility</h3>
+                <dl class="facts">
+                  <div><dt>Minecraft</dt><dd>${esc(SITE.minecraft)}</dd></div>
+                  <div><dt>Loader</dt><dd>${esc(SITE.loader)}</dd></div>
+                  ${m.side ? `<div><dt>Environment</dt><dd>${esc(sideLabel(m.side))}</dd></div>` : ""}
+                  <div><dt>Requires</dt><dd>${esc((m.requires || []).join(", ") || "Nothing else")}</dd></div>
+                </dl>
+              </div>
+              <div class="side-group">
+                <h3>Details</h3>
+                <dl class="facts">
+                  <div><dt>Version</dt><dd>${esc(m.version)}</dd></div>
+                  ${m.size ? `<div><dt>File size</dt><dd>${esc(m.size)}</dd></div>` : ""}
+                  ${m.license ? `<div><dt>License</dt><dd>${esc(m.license)}</dd></div>` : ""}
+                  ${m.updated ? `<div><dt>Updated</dt><dd>${fmtDate(m.updated)}</dd></div>` : ""}
+                  ${log.length ? `<div><dt>Published</dt><dd>${fmtDate(log[log.length - 1].date)}</dd></div>` : ""}
+                </dl>
+              </div>
+              ${links.length ? `<div class="side-group"><h3>Links</h3><ul class="link-list">${links.map(([ic, label, url]) => `<li><a href="${esc(url)}" rel="noopener">${ic}${label}</a></li>`).join("")}</ul></div>` : ""}
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
+        <button class="lb-btn lb-close" id="lb-close" aria-label="Close">${I.close}</button>
+        <button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous screenshot">${I.chevronL}</button>
+        <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+        <button class="lb-btn lb-next" id="lb-next" aria-label="Next screenshot">${I.chevronR}</button>
       </div>`;
+
+    /* tabs (also linkable: mod.html?id=x#gallery) */
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    function select(name, focus) {
+      tabs.forEach((t) => {
+        const on = t.id === `tab-${name}`;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        $(`#${t.getAttribute("aria-controls")}`).hidden = !on;
+        if (on && focus) t.focus();
+      });
+      history.replaceState(null, "", name === "description" ? location.pathname + location.search : `#${name}`);
+    }
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(t.id.replace("tab-", "")));
+      t.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        select(next.id.replace("tab-", ""), true);
+      });
+    });
+    const start = location.hash.slice(1);
+    if (["gallery", "changelog"].includes(start)) select(start);
+
+    /* lightbox */
+    if (!gallery.length) return;
+    const lb = $("#lightbox"), img = $("#lb-img"), cap = $("#lb-cap");
+    let idx = 0, lastFocus = null;
+    const show = (i) => {
+      idx = (i + gallery.length) % gallery.length;
+      img.src = gallery[idx].src; img.alt = gallery[idx].caption || "";
+      cap.innerHTML = `${esc(gallery[idx].caption || "")}<span>${idx + 1} / ${gallery.length}</span>`;
+    };
+    const open = (i) => { lastFocus = document.activeElement; show(i); lb.classList.add("open"); document.body.style.overflow = "hidden"; $("#lb-close").focus(); };
+    const close = () => { lb.classList.remove("open"); document.body.style.overflow = ""; lastFocus && lastFocus.focus(); };
+    $("#lb-prev").hidden = $("#lb-next").hidden = gallery.length < 2;
+
+    root.addEventListener("click", (e) => { const s = e.target.closest(".shot"); if (s) open(+s.dataset.index); });
+    root.addEventListener("keydown", (e) => { const s = e.target.closest(".shot"); if (s && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(+s.dataset.index); } });
+    $("#lb-close").addEventListener("click", close);
+    $("#lb-prev").addEventListener("click", () => show(idx - 1));
+    $("#lb-next").addEventListener("click", () => show(idx + 1));
+    lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+    document.addEventListener("keydown", (e) => {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") show(idx - 1);
+      if (e.key === "ArrowRight") show(idx + 1);
+    });
   }
 
-  if (document.body.dataset.page === "home") home();
-  if (document.body.dataset.page === "mod") modPage();
+  layout();
+  const page = document.body.dataset.page;
+  if (page === "home") home();
+  if (page === "mods") modsPage();
+  if (page === "mod") modPage();
 })();

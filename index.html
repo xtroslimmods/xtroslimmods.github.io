@@ -4,51 +4,54 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>Mods</title>
-  <meta name="description" content="Fabric mods for Minecraft.">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <title>xtroslimmods</title>
+  <meta name="description" content="Fabric mods for Minecraft 1.21.11 by xtroslimmods.">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-page="home">
+<body data-page="home" class="welcome">
   <div class="bg" aria-hidden="true"></div>
+  <header class="site-header" id="site-header"></header>
 
-  <header class="nav-wrap">
-    <div class="nav wrap">
-      <a href="./" class="brand"><span class="brand-mark"></span><span id="brand">Mods</span></a>
-      <nav id="site-links" class="nav-links" aria-label="Elsewhere"></nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero wrap">
-      <span class="pill" id="pill"><span class="dot"></span><span id="pill-text"></span></span>
-      <h1 class="gradient-text" id="tagline">Mods</h1>
-      <p class="lead" id="intro"></p>
-      <div class="hero-actions">
-        <a href="#mods" class="btn btn-primary">Browse mods</a>
-        <a href="#" id="hero-github" class="btn btn-glass" hidden>GitHub</a>
-      </div>
-    </section>
-
-    <section id="mods" class="wrap mods-section" aria-labelledby="mods-title">
-      <div class="section-head">
-        <h2 id="mods-title">All mods <span class="count" id="count"></span></h2>
-        <label class="search">
-          <span class="visually-hidden">Search mods</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <input id="q" type="search" placeholder="Search mods" autocomplete="off">
-        </label>
+  <main id="main">
+    <section class="wrap hero">
+      <div>
+        <span class="pill"><span class="dot"></span>Fabric · Minecraft <span data-site="minecraft"></span></span>
+        <h1><span class="grad-text">Welcome to</span><br><span data-site="name"></span>'s mods</h1>
+        <p class="lead" data-site="intro"></p>
+        <div class="hero-actions">
+          <a href="mods.html" class="btn btn-primary btn-lg">Browse mods</a>
+          <a href="#" data-discord class="btn btn-discord btn-lg">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.3A16.6 16.6 0 0 0 15.5 4l-.5 1a15.3 15.3 0 0 0-6 0l-.5-1a16.6 16.6 0 0 0-4.1 1.3C1.8 9.2 1.1 13 1.4 16.7a16.7 16.7 0 0 0 5.1 2.6l1.1-1.8a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11.4 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.8a16.6 16.6 0 0 0 5.1-2.6c.4-4.3-.7-8-2.9-11.4zM8.5 14.4c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>
+            Join the Discord
+          </a>
+        </div>
+        <p class="hero-meta">
+          <span><strong id="stat-mods">0</strong>mods</span>
+          <span id="stat-dl-wrap"><strong id="stat-dl">0</strong>downloads</span>
+          <span><strong>100%</strong>free</span>
+        </p>
       </div>
 
-      <div id="grid" class="grid"></div>
-      <p id="empty" class="empty" hidden>No mods match “<span id="empty-term"></span>”. <button type="button" id="clear" class="text-btn">Clear search</button></p>
+      <div class="hero-art" aria-hidden="true">
+        <div class="ring"><img src="images/logo.png" alt=""></div>
+        <div class="badge two">
+          <span class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 15 15 4l5 5L9 20H4z"/><path d="M12 7l5 5"/></svg></span>
+          <span>Fabric <small>Mod loader</small></span>
+        </div>
+        <div class="badge one">
+          <span class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
+          <span>1.21.11 <small>Minecraft version</small></span>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap site-footer" id="footer"></footer>
+  <p class="welcome-foot" data-site="footer"></p>
 
   <script src="mods.js"></script>
   <script src="app.js"></script>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Help · xtroslimmods</title>
+  <meta name="description" content="How to install xtroslimmods' Fabric mods, common questions, and how to get help.">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="help">
+  <div class="bg" aria-hidden="true"></div>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main" class="wrap">
+    <div class="page-head">
+      <h1>Help</h1>
+      <p>How to install the mods, answers to common questions, and where to go if something breaks.</p>
+    </div>
+
+    <div class="doc-layout">
+      <nav class="toc" aria-label="On this page">
+        <p>On this page</p>
+        <ul>
+          <li><a href="#install">Installing a mod</a></li>
+          <li><a href="#update">Updating</a></li>
+          <li><a href="#faq">Common questions</a></li>
+          <li><a href="#bugs">Reporting a bug</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <article class="doc">
+        <section id="install">
+          <h2>Installing a mod</h2>
+          <p>All of my mods are for <strong>Fabric</strong> on <strong>Minecraft <span data-site="minecraft"></span></strong>. If you've never used Fabric before, it takes about five minutes.</p>
+          <ol class="steps-v">
+            <li><div><strong>Install Fabric Loader</strong>Download the installer from <a href="https://fabricmc.net/use/installer/" rel="noopener">fabricmc.net</a>, run it, pick Minecraft <span data-site="minecraft"></span> and click Install.</div></li>
+            <li><div><strong>Download Fabric API</strong>Most of my mods need it. Get the version for <span data-site="minecraft"></span> from <a href="https://modrinth.com/mod/fabric-api" rel="noopener">Modrinth</a>.</div></li>
+            <li><div><strong>Download the mod</strong>Pick a mod on the <a href="mods.html">Mods</a> page and click Download. You'll get a <code>.jar</code> file.</div></li>
+            <li><div><strong>Put both files in your mods folder</strong>On Windows, press <code>Win + R</code>, type <code>%appdata%\.minecraft\mods</code> and press Enter. On Mac it's <code>~/Library/Application Support/minecraft/mods</code>. Create the folder if it isn't there.</div></li>
+            <li><div><strong>Launch the game</strong>In the Minecraft Launcher, choose the <em>fabric-loader-<span data-site="minecraft"></span></em> profile and click Play.</div></li>
+          </ol>
+          <p style="margin-top:1.25rem">Using a launcher like Prism, Modrinth App or CurseForge? Create a Fabric <span data-site="minecraft"></span> instance and drop the <code>.jar</code> into that instance's <code>mods</code> folder instead.</p>
+        </section>
+
+        <section id="update">
+          <h2>Updating</h2>
+          <p>Delete the old <code>.jar</code> from your mods folder, then put the new one in. Keeping both will crash the game. Each mod's <strong>Changelog</strong> tab shows what changed in every version.</p>
+        </section>
+
+        <section id="faq">
+          <h2>Common questions</h2>
+          <div class="faq">
+            <details>
+              <summary>Do I need Fabric API?</summary>
+              <div><p>For most mods, yes. Each mod page lists what it needs under <strong>Compatibility → Requires</strong>. If it says "Nothing else", you only need Fabric Loader.</p></div>
+            </details>
+            <details>
+              <summary>Can I put these mods in my modpack?</summary>
+              <div><p>Yes. You're welcome to include them in any modpack, public or private. A link back to this site or my GitHub is appreciated. See <a href="terms.html">Terms &amp; conduct</a> for the details.</p></div>
+            </details>
+            <details>
+              <summary>Does it work on servers?</summary>
+              <div><p>Check the <strong>Environment</strong> on the mod's page. <em>Client</em> mods only go on your computer and work on any server. <em>Server</em> mods only go on the server. <em>Client or server</em> mods should be installed on both.</p></div>
+            </details>
+            <details>
+              <summary>Will you make a Forge, NeoForge or older-version port?</summary>
+              <div><p>Not right now. I focus on Fabric for <span data-site="minecraft"></span> so every mod stays polished and up to date. You can suggest ports in the Discord.</p></div>
+            </details>
+            <details>
+              <summary>My game crashes on launch. What do I do?</summary>
+              <div><p>First make sure you're on Minecraft <span data-site="minecraft"></span>, Fabric API is installed, and there's only one version of each mod in your folder. If it still crashes, send me your crash report (see below).</p></div>
+            </details>
+            <details>
+              <summary>Is it safe to add or remove a mod from an existing world?</summary>
+              <div><p>Back up your world first, always. Mods that add blocks or items will remove them from your world if you uninstall the mod later.</p></div>
+            </details>
+          </div>
+        </section>
+
+        <section id="bugs">
+          <h2>Reporting a bug</h2>
+          <p>The more detail you give, the faster I can fix it. Please include:</p>
+          <ul>
+            <li>The mod's name and version</li>
+            <li>Your Fabric Loader and Fabric API versions</li>
+            <li>A list of your other mods</li>
+            <li>What you did, what you expected, and what happened instead</li>
+            <li>Your crash report or <code>latest.log</code>, uploaded to <a href="https://mclo.gs" rel="noopener">mclo.gs</a></li>
+          </ul>
+          <div class="callout" style="margin-top:1.25rem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+            <p>Crash reports are in your <code>.minecraft/crash-reports</code> folder, and the log is in <code>.minecraft/logs</code>.</p>
+          </div>
+        </section>
+
+        <section id="contact">
+          <h2>Contact</h2>
+          <p>The Discord is the quickest way to reach me and other players. GitHub is best for bug reports.</p>
+          <div class="contact-grid">
+            <a class="contact-card" href="#" data-discord>
+              <span class="c-icon" style="background:#5865f2"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.3A16.6 16.6 0 0 0 15.5 4l-.5 1a15.3 15.3 0 0 0-6 0l-.5-1a16.6 16.6 0 0 0-4.1 1.3C1.8 9.2 1.1 13 1.4 16.7a16.7 16.7 0 0 0 5.1 2.6l1.1-1.8a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11.4 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.8a16.6 16.6 0 0 0 5.1-2.6c.4-4.3-.7-8-2.9-11.4zM8.5 14.4c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg></span>
+              <span><strong>Discord</strong><span>Chat, help and updates</span></span>
+            </a>
+            <a class="contact-card" href="#" data-github>
+              <span class="c-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></span>
+              <span><strong>GitHub</strong><span>Bug reports and source code</span></span>
+            </a>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="mods.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
