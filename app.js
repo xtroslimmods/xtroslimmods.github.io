@@ -137,7 +137,7 @@
     const KEY = "dl-counts-v1";
     try {
       const cached = JSON.parse(sessionStorage.getItem(KEY) || "null");
-      if (cached && Date.now() - cached.t < 10 * 60 * 1000) { Object.assign(DL, cached.data); return (dlLoaded = true); }
+      if (cached && Date.now() - cached.t < 10 * 60 * 1000) { Object.assign(DL, cached.data); return (dlLoaded = Object.values(cached.data).some((n) => n > 0)); }
     } catch (e) { /* storage unavailable: just fetch */ }
     try {
       const ids = MODS.map((m) => m.id.toLowerCase()).sort((a, b) => b.length - a.length); // longest id wins
@@ -156,7 +156,8 @@
       }
       Object.assign(DL, data);
       try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), data })); } catch (e) {}
-      return (dlLoaded = true);
+      // Only show counts once at least one Release file exists
+      return (dlLoaded = Object.values(data).some((n) => n > 0));
     } catch (e) { return false; }
   }
   const dlCount = (m) => DL[m.id] || 0;
