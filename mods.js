@@ -73,10 +73,10 @@ const MODS = [
     icon: "images/knight-pvp.png",
     summary: "An all-in-one PvP toolkit that replaces PvP resource packs: low fire, small shield, reach indicator, target HUD and more.",
     tags: ["PvP", "HUD"],
-    version: "1.0.0",
-    updated: "2026-11-06",
-    size: "156 KB",
-    download: "files/knight-pvp-1.0.0.jar",
+    version: "1.1.0",
+    updated: "2026-11-07",
+    size: "159 KB",
+    download: "files/knight-pvp-1.1.0.jar",
     requires: ["Fabric API"],
     description: [
       "Knight PvP puts everything a PvP resource pack does, and a lot more, into one clean menu. Press Right Shift in game to open it, and change every setting live with sliders and switches.",
@@ -88,6 +88,7 @@ const MODS = [
       "Target HUD, damage numbers, and hit and kill effects",
       "Totem pop tracker and combat alerts",
       "Movable HUD panels: CPS, combo, items, cooldowns, armor, effects and keystrokes",
+      "Inventory HUD that shows your inventory above the hotbar",
       "Opens with Right Shift"
     ],
     gallery: [
@@ -95,6 +96,7 @@ const MODS = [
       { src: "images/gallery/knight-pvp-1.jpg", caption: "Customizable options for every module" }
     ],
     changelog: [
+      { version: "1.1.0", date: "2026-11-07", notes: ["New Inventory HUD module: shows your inventory above the hotbar, with PvP item highlights, adjustable background and an option to only show it while holding Tab", "Test buttons for Hit Sound, Hit Particles and Kill Effects so you can preview them without hitting anyone"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
   },
