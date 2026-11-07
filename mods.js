@@ -60,7 +60,9 @@ const MODS = [
       "Share codes to swap layouts with friends",
       "Hotkeys and optional hotbar refill"
     ],
-    gallery: [],
+    gallery: [
+      { src: "images/gallery/ez-presets-1.jpg", caption: "Your inventory sorted by your preset in one click" }
+    ],
     changelog: [
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
@@ -88,7 +90,10 @@ const MODS = [
       "Movable HUD panels: CPS, combo, items, cooldowns, armor, effects and keystrokes",
       "Opens with Right Shift"
     ],
-    gallery: [],
+    gallery: [
+      { src: "images/gallery/knight-pvp-2.jpg", caption: "29 visual PvP modules, all in one menu" },
+      { src: "images/gallery/knight-pvp-1.jpg", caption: "Customizable options for every module" }
+    ],
     changelog: [
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
@@ -115,7 +120,10 @@ const MODS = [
       "Kill effects, hit effects and a custom crosshair",
       "Armor HUD, PvP HUD, enchantment glint, low fire and view model"
     ],
-    gallery: [],
+    gallery: [
+      { src: "images/gallery/loadout-studio-1.jpg", caption: "Over 115 premade textures for every item" },
+      { src: "images/gallery/loadout-studio-2.jpg", caption: "65 different changeable items" }
+    ],
     changelog: [
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
