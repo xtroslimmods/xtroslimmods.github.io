@@ -106,10 +106,10 @@ const MODS = [
     icon: "images/loadout-studio.png",
     summary: "Retexture every PvP item, your HUD and your inventory with hundreds of free presets or your own resource packs.",
     tags: ["Visual", "Textures"],
-    version: "1.0.0",
-    updated: "2026-11-06",
-    size: "156 KB",
-    download: "files/loadout-studio-1.0.0.jar",
+    version: "1.1.0",
+    updated: "2026-11-07",
+    size: "175 KB",
+    download: "files/loadout-studio-1.1.0.jar",
     requires: ["Fabric API"],
     description: [
       "Loadout Studio lets you design how your PvP gear looks without hunting for resource packs. Pick a new look for every PvP item, your hotbar, HUD and inventory from hundreds of free presets, or use textures from resource packs you already have.",
@@ -120,13 +120,15 @@ const MODS = [
       "Hundreds of free presets",
       "Use textures from your own resource packs",
       "Kill effects, hit effects and a custom crosshair",
-      "Armor HUD, PvP HUD, enchantment glint, low fire and view model"
+      "Armor HUD, PvP HUD, enchantment glint, low fire and view model",
+      "Motion blur, stretched resolution (4:3), custom hit colour and shield size"
     ],
     gallery: [
       { src: "images/gallery/loadout-studio-1.jpg", caption: "Over 115 premade textures for every item" },
       { src: "images/gallery/loadout-studio-2.jpg", caption: "65 different changeable items" }
     ],
     changelog: [
+      { version: "1.1.0", date: "2026-11-07", notes: ["Motion blur: smooth trails when you turn the camera (experimental)", "Aspect ratio: play stretched like 4:3 on a 16:9 screen, while your HUD and menus stay normal", "Hit colour: change or remove the red flash when something takes damage", "Shield size: make the shield smaller and lower it out of your view"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
   }
