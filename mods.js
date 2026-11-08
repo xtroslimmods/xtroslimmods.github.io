@@ -43,10 +43,10 @@ const MODS = [
     icon: "images/ez-presets.png",
     summary: "Save your inventory layout as a preset and put everything back in place with one click.",
     tags: ["Inventory", "Utility"],
-    version: "1.0.0",
-    updated: "2026-11-06",
+    version: "1.1.0",
+    updated: "2026-11-08",
     size: "95 KB",
-    download: "files/ez-presets-1.0.0.jar",
+    download: "files/ez-presets-1.1.0.jar",
     requires: ["Fabric API"],
     description: [
       "Stop rearranging your inventory after every death or restock. EZ Presets lets you save the layout you like and snap everything back into place with a single click.",
@@ -64,6 +64,7 @@ const MODS = [
       { src: "images/gallery/ez-presets-1.jpg", caption: "Your inventory sorted by your preset in one click" }
     ],
     changelog: [
+      { version: "1.1.0", date: "2026-11-08", notes: ["Improved hotbar refill"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
   },
@@ -73,10 +74,10 @@ const MODS = [
     icon: "images/knight-pvp.png",
     summary: "An all-in-one PvP toolkit that replaces PvP resource packs: low fire, small shield, reach indicator, target HUD and more.",
     tags: ["PvP", "HUD"],
-    version: "1.2.0",
-    updated: "2026-11-07",
-    size: "188 KB",
-    download: "files/knight-pvp-1.2.0.jar",
+    version: "1.2.1",
+    updated: "2026-11-08",
+    size: "191 KB",
+    download: "files/knight-pvp-1.2.1.jar",
     requires: ["Fabric API"],
     description: [
       "Knight PvP puts everything a PvP resource pack does, and a lot more, into one clean menu. Press Right Shift in game to open it, and change every setting live with sliders and switches.",
@@ -98,6 +99,7 @@ const MODS = [
       { src: "images/gallery/knight-pvp-1.jpg", caption: "Customizable options for every module" }
     ],
     changelog: [
+      { version: "1.2.1", date: "2026-11-08", notes: ["Better performance: the HUD, menu text and nearest-player checks are now cached instead of recalculated every frame", "Smoother CPS counter, and damage numbers and totem pops are capped so long fights can't slow your game down"] },
       { version: "1.2.0", date: "2026-11-07", notes: ["View Model: change the size, position, rotation and swing speed of your main hand item, and turn off the equip animation", "Glint: colour, speed and strength of the enchantment shine, a rainbow mode, or hide it completely", "Hit Colour: change the red flash on players and mobs when they get hit", "Motion Blur and Stretched Res (4:3 or a custom stretch)", "Zoom: hold C to zoom, with scroll to zoom, smooth zoom and a cinematic camera", "Fullbright, Auto Sprint and a new Armor HUD", "HUD Cleaner: hide boss bars, the scoreboard, pop-ups, titles and other parts of the vanilla HUD", "Side Shield presets, with an option to only show the shield while blocking", "Speed panel showing how fast you're moving", "Removed the Inventory HUD and the particle and kill effect test buttons"] },
       { version: "1.1.0", date: "2026-11-07", notes: ["New Inventory HUD module: shows your inventory above the hotbar, with PvP item highlights, adjustable background and an option to only show it while holding Tab", "Test buttons for Hit Sound, Hit Particles and Kill Effects so you can preview them without hitting anyone"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
@@ -109,10 +111,10 @@ const MODS = [
     icon: "images/loadout-studio.png",
     summary: "Retexture every PvP item and your HUD with 268 free styles, plus shader packs, sky looks and screen filters.",
     tags: ["Visual", "Textures"],
-    version: "1.2.0",
-    updated: "2026-11-07",
-    size: "241 KB",
-    download: "files/loadout-studio-1.2.0.jar",
+    version: "1.2.1",
+    updated: "2026-11-08",
+    size: "248 KB",
+    download: "files/loadout-studio-1.2.1.jar",
     requires: ["Fabric API"],
     description: [
       "Loadout Studio lets you design how your PvP gear looks without hunting for resource packs. Pick a new look for every PvP item, your hotbar, HUD and inventory from hundreds of free presets, or use textures from resource packs you already have.",
@@ -131,6 +133,7 @@ const MODS = [
       { src: "images/gallery/loadout-studio-2.jpg", caption: "65 different changeable items" }
     ],
     changelog: [
+      { version: "1.2.1", date: "2026-11-08", notes: ["Better performance: resource packs and shader packs are scanned in the background and only rescanned when they change", "Faster texture search and filtering, and closing the menu no longer stutters", "Unfinished shader pack downloads are cleaned up if they fail", "Sky and weather settings refresh more reliably"] },
       { version: "1.2.0", date: "2026-11-07", notes: ["New Shaders tab: manage your Iris shader packs, download top packs from Modrinth in game, and tune puddles, reflections, haze and glow", "44 sky looks and custom sky packs (with Skyboxify), plus restyled sun, moon, clouds, rain and snow", "15 screen filters like Cinematic, Moody, Golden and Noir", "Client-side rain, snow and time of day", "Textures: now 268 free styles with a spinning preview", "The Effects tab moved to Knight PvP (motion blur, hit colour, stretched res, shield, crosshair and HUD)"] },
       { version: "1.1.0", date: "2026-11-07", notes: ["Motion blur: smooth trails when you turn the camera (experimental)", "Aspect ratio: play stretched like 4:3 on a 16:9 screen, while your HUD and menus stay normal", "Hit colour: change or remove the red flash when something takes damage", "Shield size: make the shield smaller and lower it out of your view"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
