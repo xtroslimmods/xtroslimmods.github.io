@@ -164,7 +164,10 @@ const MODS = [
       "Coloured or mono gamemode icons and several colour styles",
       "Settings menu with hotkeys and Mod Menu support"
     ],
-    gallery: [],
+    gallery: [
+      { src: "images/gallery/tierlens-1.jpg", caption: "Easy rank lookup: every tierlist and gamemode in one profile" },
+      { src: "images/gallery/tierlens-2.jpg", caption: "Tons of settings to choose what shows next to names" }
+    ],
     changelog: [
       { version: "1.0.0", date: "2026-11-08", notes: ["First release"] }
     ]
