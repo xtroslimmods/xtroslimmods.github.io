@@ -138,5 +138,35 @@ const MODS = [
       { version: "1.1.0", date: "2026-11-08", notes: ["Improved hotbar refill"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
+  },
+  {
+    id: "tierlens",
+    name: "TierLens",
+    icon: "images/tierlens.png",
+    summary: "See MCTiers, PvPTiers and SubTiers rankings on nametags, in the tab list and in chat, with a full player profile viewer.",
+    tags: ["PvP", "Utility"],
+    version: "1.0.0",
+    updated: "2026-11-08",
+    size: "424 KB",
+    download: "files/tierlens-1.0.0.jar",
+    requires: ["Fabric API"],
+    description: [
+      "TierLens shows every player's PvP tier rankings right where you need them: above their heads, in the tab list and next to their name in chat. It pulls live data from MCTiers, PvPTiers and SubTiers.",
+      "Open any player's full profile to see their tiers in every gamemode, or search for someone who isn't online. It's completely client-side, so it works on any server."
+    ],
+    features: [
+      "Tiers from MCTiers, PvPTiers and SubTiers",
+      "Shows tiers on nametags, in the tab list and in chat",
+      "Full player profile viewer with skins and every gamemode",
+      "Search for any player, even if they're not on your server",
+      "Pick a gamemode for each side of the name, or show their best tier",
+      "Auto-detects the kit you're using from your inventory",
+      "Coloured or mono gamemode icons and several colour styles",
+      "Settings menu with hotkeys and Mod Menu support"
+    ],
+    gallery: [],
+    changelog: [
+      { version: "1.0.0", date: "2026-11-08", notes: ["First release"] }
+    ]
   }
 ];
