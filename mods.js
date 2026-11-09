@@ -38,37 +38,6 @@ const SITE = {
 
 const MODS = [
   {
-    id: "ez-presets",
-    name: "EZ Presets",
-    icon: "images/ez-presets.png",
-    summary: "Save your inventory layout as a preset and put everything back in place with one click.",
-    tags: ["Inventory", "Utility"],
-    version: "1.1.0",
-    updated: "2026-11-08",
-    size: "95 KB",
-    download: "files/ez-presets-1.1.0.jar",
-    requires: ["Fabric API"],
-    description: [
-      "Stop rearranging your inventory after every death or restock. EZ Presets lets you save the layout you like and snap everything back into place with a single click.",
-      "A presets panel sits right next to your inventory with a live preview of each layout, so you always know what you're loading. Everything is client-side, so it works on any server."
-    ],
-    features: [
-      "Save as many inventory layouts as you want",
-      "One click puts every item back where it belongs",
-      "Presets panel next to your inventory with a live preview",
-      "Sort button",
-      "Share codes to swap layouts with friends",
-      "Hotkeys and optional hotbar refill"
-    ],
-    gallery: [
-      { src: "images/gallery/ez-presets-1.jpg", caption: "Your inventory sorted by your preset in one click" }
-    ],
-    changelog: [
-      { version: "1.1.0", date: "2026-11-08", notes: ["Improved hotbar refill"] },
-      { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
-    ]
-  },
-  {
     id: "knight-pvp",
     name: "Knight PvP",
     icon: "images/knight-pvp.png",
@@ -136,6 +105,37 @@ const MODS = [
       { version: "1.2.1", date: "2026-11-08", notes: ["Better performance: resource packs and shader packs are scanned in the background and only rescanned when they change", "Faster texture search and filtering, and closing the menu no longer stutters", "Unfinished shader pack downloads are cleaned up if they fail", "Sky and weather settings refresh more reliably"] },
       { version: "1.2.0", date: "2026-11-07", notes: ["New Shaders tab: manage your Iris shader packs, download top packs from Modrinth in game, and tune puddles, reflections, haze and glow", "44 sky looks and custom sky packs (with Skyboxify), plus restyled sun, moon, clouds, rain and snow", "15 screen filters like Cinematic, Moody, Golden and Noir", "Client-side rain, snow and time of day", "Textures: now 268 free styles with a spinning preview", "The Effects tab moved to Knight PvP (motion blur, hit colour, stretched res, shield, crosshair and HUD)"] },
       { version: "1.1.0", date: "2026-11-07", notes: ["Motion blur: smooth trails when you turn the camera (experimental)", "Aspect ratio: play stretched like 4:3 on a 16:9 screen, while your HUD and menus stay normal", "Hit colour: change or remove the red flash when something takes damage", "Shield size: make the shield smaller and lower it out of your view"] },
+      { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
+    ]
+  },
+  {
+    id: "ez-presets",
+    name: "EZ Presets",
+    icon: "images/ez-presets.png",
+    summary: "Save your inventory layout as a preset and put everything back in place with one click.",
+    tags: ["Inventory", "Utility"],
+    version: "1.1.0",
+    updated: "2026-11-08",
+    size: "95 KB",
+    download: "files/ez-presets-1.1.0.jar",
+    requires: ["Fabric API"],
+    description: [
+      "Stop rearranging your inventory after every death or restock. EZ Presets lets you save the layout you like and snap everything back into place with a single click.",
+      "A presets panel sits right next to your inventory with a live preview of each layout, so you always know what you're loading. Everything is client-side, so it works on any server."
+    ],
+    features: [
+      "Save as many inventory layouts as you want",
+      "One click puts every item back where it belongs",
+      "Presets panel next to your inventory with a live preview",
+      "Sort button",
+      "Share codes to swap layouts with friends",
+      "Hotkeys and optional hotbar refill"
+    ],
+    gallery: [
+      { src: "images/gallery/ez-presets-1.jpg", caption: "Your inventory sorted by your preset in one click" }
+    ],
+    changelog: [
+      { version: "1.1.0", date: "2026-11-08", notes: ["Improved hotbar refill"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
     ]
   }

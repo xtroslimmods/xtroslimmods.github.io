@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Pixelify+Sans:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body data-page="home" class="welcome">
   <div class="bg" aria-hidden="true"></div>
@@ -19,10 +19,13 @@
 
   <main id="main">
     <section class="wrap hero">
-      <div>
-        <span class="pill"><span class="dot"></span>Client-side · Fabric · Minecraft <span data-site="minecraft"></span></span>
-        <p class="hello">Welcome to</p>
-        <h1><span data-site="name"></span></h1>
+      <div class="hero-copy">
+        <ul class="tags hero-tags">
+          <li class="tag tag-loader">Fabric</li>
+          <li class="tag tag-version">Minecraft <span data-site="minecraft"></span></li>
+          <li class="tag">Client-side</li>
+        </ul>
+        <h1 class="title"><span data-site="name"></span></h1>
         <p class="lead" data-site="intro"></p>
         <div class="hero-actions">
           <a href="mods.html" class="btn btn-primary btn-lg">Browse mods</a>
@@ -31,31 +34,23 @@
             Join the Discord
           </a>
         </div>
-        <p class="hero-meta">
-          <span><strong id="stat-mods">0</strong>mods</span>
-          <span id="stat-dl-wrap"><strong id="stat-dl">0</strong>downloads</span>
-          <span><strong>Free</strong>for personal use</span>
-        </p>
       </div>
 
       <div class="hero-art" aria-hidden="true">
-        <div class="ring"><img src="images/logo.png" alt=""></div>
-        <div class="badge two">
-          <span class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
-          <span>Client-side <small>Works on any server</small></span>
-        </div>
-        <div class="badge one">
-          <span class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
-          <span>1.21.11 <small>Minecraft version</small></span>
-        </div>
+        <div class="knight"><img src="images/logo.png" alt=""><span class="glint" style="--mask: url(images/logo.png)"></span></div>
       </div>
     </section>
+
+    <nav class="hotbar-zone" aria-label="Mods">
+      <div class="held" id="held" aria-live="polite"><strong id="held-name"></strong><span id="held-sum"></span></div>
+      <ol class="hotbar" id="hotbar"></ol>
+    </nav>
   </main>
 
   <p class="welcome-foot" data-site="footer"></p>
 
-  <script src="mods.js?v=13"></script>
-  <script src="app.js?v=13"></script>
+  <script src="mods.js?v=14"></script>
+  <script src="app.js?v=14"></script>
   <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "421a33e1ddfc40f89c7f3b62a082462c"}'></script>
 </body>
 </html>

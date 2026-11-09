@@ -178,7 +178,7 @@
         </div>
         <div class="mod-stats">
           ${dlLoaded ? `<span class="stat-line" title="${dlCount(m).toLocaleString()} downloads">${I.download}<b>${compact(dlCount(m))}</b> downloads</span>` : ""}
-          <span class="stat-line"><b>v${esc(m.version)}</b></span>
+          <span class="stat-line ver"><b>v${esc(m.version)}</b></span>
           ${m.updated ? `<span class="stat-line" title="${fmtDate(m.updated)}">${I.clock}${ago(m.updated)}</span>` : ""}
         </div>
       </article>`;
@@ -189,15 +189,35 @@
   /* ---------- welcome page (one screen, no scrolling) ---------- */
   function home() {
     document.title = `${SITE.name} · ${SITE.tagline}`;
-    $("#stat-mods").textContent = MODS.length;
-    const wrap = $("#stat-dl-wrap");
-    wrap.hidden = true;
-    loadDownloads().then((ok) => {
-      if (!ok) return;
-      $("#stat-dl").textContent = compact(totalDownloads());
-      wrap.title = `${totalDownloads().toLocaleString()} downloads`;
-      wrap.hidden = false;
+    const bar = $("#hotbar"), heldName = $("#held-name"), heldSum = $("#held-sum");
+    const mods = MODS.slice(0, 9); // same order as mods.js
+    bar.innerHTML = Array.from({ length: 9 }, (_, i) => {
+      const m = mods[i];
+      if (!m) return `<li aria-hidden="true"></li>`;
+      const art = m.icon
+        ? `<img src="${esc(m.icon)}" alt=""><span class="glint" style="--mask: url('${esc(m.icon)}')"></span>`
+        : `<span class="initials">${esc(initials(m.name))}</span>`;
+      return `<li><a class="slot" href="${modUrl(m)}" data-i="${i}" aria-label="${esc(m.name)}: ${esc(m.summary)}"><span class="key" aria-hidden="true">${i + 1}</span>${art}</a></li>`;
+    }).join("");
+
+    const slots = [...bar.querySelectorAll(".slot")];
+    const select = (i) => {
+      const m = mods[i]; if (!m) return;
+      slots.forEach((s) => s.classList.toggle("selected", +s.dataset.i === i));
+      heldName.textContent = m.name;
+      heldSum.textContent = m.summary;
+    };
+    slots.forEach((s) => {
+      s.addEventListener("mouseenter", () => select(+s.dataset.i));
+      s.addEventListener("focus", () => select(+s.dataset.i));
     });
+    // number keys pick a hotbar slot, like in game
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea|select/i.test(e.target.tagName)) return;
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= slots.length) { select(n - 1); slots[n - 1].focus(); }
+    });
+    select(0);
   }
 
   /* ---------- mods page ---------- */
@@ -277,7 +297,7 @@
       <div class="wrap">
         <nav class="crumbs" aria-label="Breadcrumb"><a href="mods.html">Mods</a>${I.chevronR}<span aria-current="page">${esc(m.name)}</span></nav>
 
-        <header class="mod-header">
+        <header class="mod-header"${gallery.length ? ` style="--shot: url('${esc(gallery[0].src)}')"` : ""}>
           ${icon(m)}
           <div>
             <h1>${esc(m.name)}</h1>
@@ -294,14 +314,14 @@
           </div>
         </header>
 
-        <div class="tabbar" role="tablist" aria-label="${esc(m.name)}">
-          <button role="tab" id="tab-description" aria-controls="panel-description" aria-selected="true">Description</button>
-          <button role="tab" id="tab-gallery" aria-controls="panel-gallery" aria-selected="false">Gallery <span class="count">${gallery.length}</span></button>
-          <button role="tab" id="tab-changelog" aria-controls="panel-changelog" aria-selected="false">Changelog <span class="count">${log.length}</span></button>
-        </div>
-
         <div class="mod-layout">
           <div>
+            <div class="tabbar" role="tablist" aria-label="${esc(m.name)}">
+              <button role="tab" id="tab-description" aria-controls="panel-description" aria-selected="true">Description</button>
+              <button role="tab" id="tab-gallery" aria-controls="panel-gallery" aria-selected="false">Gallery <span class="count">${gallery.length}</span></button>
+              <button role="tab" id="tab-changelog" aria-controls="panel-changelog" aria-selected="false">Changelog <span class="count">${log.length}</span></button>
+            </div>
+
             <section class="panel prose" role="tabpanel" id="panel-description" aria-labelledby="tab-description">
               <h2>About ${esc(m.name)}</h2>
               ${desc.map((p) => `<p>${esc(p)}</p>`).join("")}
