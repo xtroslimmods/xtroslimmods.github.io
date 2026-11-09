@@ -353,7 +353,7 @@ body.welcome { height: 100vh; height: 100dvh; overflow: hidden; }
 .mod-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 1.25rem; margin-top: 1.5rem; align-items: start; }
 
 /* inventory-style tabs that sit on top of the panel */
-.tabbar { display: flex; gap: 4px; margin: 0; padding: 0 0 0 6px; overflow-x: auto; position: relative; z-index: 1; }
+.tabbar { display: flex; gap: 4px; margin: 0; padding: 0 0 0 6px; position: relative; z-index: 1; }
 .tabbar button {
   display: inline-flex; align-items: center; gap: .45rem;
   padding: .7rem 1.1rem .6rem; margin-bottom: -2px;
