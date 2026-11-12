@@ -80,10 +80,10 @@ const MODS = [
     icon: "images/loadout-studio.png",
     summary: "Retexture every PvP item and your HUD with 268 free styles, plus shader packs, sky looks and screen filters.",
     tags: ["Visual", "Textures"],
-    version: "1.2.1",
-    updated: "2026-11-08",
-    size: "248 KB",
-    download: "files/loadout-studio-1.2.1.jar",
+    version: "1.2.2",
+    updated: "2026-11-12",
+    size: "310 KB",
+    download: "files/loadout-studio-1.2.2.jar",
     requires: ["Fabric API"],
     description: [
       "Loadout Studio lets you design how your PvP gear looks without hunting for resource packs. Pick a new look for every PvP item, your hotbar, HUD and inventory from hundreds of free presets, or use textures from resource packs you already have.",
@@ -102,7 +102,8 @@ const MODS = [
       { src: "images/gallery/loadout-studio-2.jpg", caption: "65 different changeable items" }
     ],
     changelog: [
-      { version: "1.2.1", date: "2026-11-08", notes: ["Better performance: resource packs and shader packs are scanned in the background and only rescanned when they change", "Faster texture search and filtering, and closing the menu no longer stutters", "Unfinished shader pack downloads are cleaned up if they fail", "Sky and weather settings refresh more reliably"] },
+      { version: "1.2.2", date: "2026-11-12", notes: ["New mod icon"] },
+      { version: "1.2.1", date: "2026-11-08", notes: ["Fixed memory leaks: resource pack zips are closed properly, so Windows no longer keeps them locked after you press Apply", "Textures, thumbnails and item icons are freed when you close the menu instead of staying in memory", "Less lag in game: rain, thunder and time lock are worked out once per tick instead of many times per frame", "Smoother menu: pack counts, names and the texture picker are only recalculated when something changes", "Better performance: resource packs and shader packs are scanned in the background and only rescanned when they change", "Faster texture search and filtering, and closing the menu no longer stutters", "Unfinished shader pack downloads are cleaned up if they fail", "Sky and weather settings refresh more reliably"] },
       { version: "1.2.0", date: "2026-11-07", notes: ["New Shaders tab: manage your Iris shader packs, download top packs from Modrinth in game, and tune puddles, reflections, haze and glow", "44 sky looks and custom sky packs (with Skyboxify), plus restyled sun, moon, clouds, rain and snow", "15 screen filters like Cinematic, Moody, Golden and Noir", "Client-side rain, snow and time of day", "Textures: now 268 free styles with a spinning preview", "The Effects tab moved to Knight PvP (motion blur, hit colour, stretched res, shield, crosshair and HUD)"] },
       { version: "1.1.0", date: "2026-11-07", notes: ["Motion blur: smooth trails when you turn the camera (experimental)", "Aspect ratio: play stretched like 4:3 on a 16:9 screen, while your HUD and menus stay normal", "Hit colour: change or remove the red flash when something takes damage", "Shield size: make the shield smaller and lower it out of your view"] },
       { version: "1.0.0", date: "2026-11-06", notes: ["First release"] }
